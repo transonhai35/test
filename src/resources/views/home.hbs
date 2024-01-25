@@ -1,0 +1,46 @@
+{{> header}}
+
+
+
+<content class="background">
+  <img src="/img/main-img3.jpg" class="home-img" alt="">
+
+
+  <div class="mt-4 container">
+    <h3>Danh sách sản phẩm</h3>
+
+        <div class="row">
+
+        {{#each prods}}
+        <div class="col-sm-6" style="padding: 10px;">
+            <div class="card invitation-card-item">
+                <a href="#">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="#">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-text">Liên hệ: {{this.phone}}</p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+
+    </div>
+
+</div>
+
+</content>
+
+
+<script>
+  let account = JSON.parse(localStorage.getItem('account'));
+    window.onload = function() {
+      if(account) {
+        window.location.href = "/me/my-home";
+      }
+  }
+</script>

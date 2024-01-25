@@ -1,0 +1,118 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">My Web</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="https://i.pinimg.com/564x/8f/33/30/8f3330d6163782b88b506d396f5d156f.jpg" alt="" class="user-avatar">
+              <span id="full-name"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" id="list-prods">Danh sách sản phẩm của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/me/v1/product/create">Thêm sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="logout" href="/">Đăng xuất</a>
+          </div>
+        </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+</header>
+
+<div class="mt-4 product__container">
+   {{#each data}}
+            <div class="product">
+                <form class="product__cards" id="formdata">
+                    <div class="form-group">
+                        <label for="name">Tên</label>
+                        <textarea type="text" class="form-control product__name" id="name" name="name">{{this.name}}</textarea> 
+                    </div>
+                   <div class="form-group">
+                        <label for="description">Mô tả</label>
+                        <textarea type="text" class="form-control product__description " id="description" name="description">{{this.description}}</textarea>
+                    </div> 
+                    <div class="form-group">
+                        <label for="name">Giá</label>
+                        <textarea type="text" class="form-control product__price " id="price" name="price">{{this.price}}</textarea>
+                     </div>
+                    <div class="form-group">
+                          <label for="name">Link ảnh</label>
+                          <textarea type="text" class="form-control product__image " id="image" name="image">{{this.image}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Số điên thoại</label>
+                        <textarea type="text" class="form-control product__phone " id="phone" name="phone">{{this.phone}}</textarea>
+                     </div>
+                    <p>{{this.createAt}}</p>
+                    <p>{{this.updateAt}}</p>
+                    <button type="submit" style="text-align: center;" class="btn btn-primary">Lưu</button>
+                </form>
+        </div>
+    {{/each}}
+    </div>
+</div>
+<div class="space-min"></div>
+
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+    let fontStyle;
+    let fileName;
+  let form = document.getElementById('formdata');
+  let inputGroupSelect01 = document.getElementById('inputGroupSelect01');
+  let account = JSON.parse(localStorage.getItem('account'));
+  let id = window.location.href.split('/').pop().split('?').toString();
+
+  let author = account.id;
+  let fullName = document.getElementById('full-name');
+  window.onload = function() {
+    fullName.innerText = account.fullName;
+  }
+  let listProds = document.getElementById('list-prods');
+  let listProdsLink = '/me/v1/product/list' + '/' + author;
+  listProds.href = listProdsLink;
+
+     let logout = document.getElementById('logout');
+  logout.onclick = () => {
+    localStorage.removeItem('account');
+  }
+
+
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    // Loop over them and prevent submission
+
+      form.addEventListener('submit', function(event) {
+        axios({
+            method: 'post',
+            url: ':id',
+            data: {
+                params: id,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: document.getElementById('price').value,
+                image: document.getElementById('image').value,
+                phone: document.getElementById('phone').value,
+            }
+        }).then(res => {
+            window.location.href = listProdsLink;
+        }).catch(err => {
+            alert(err.response.data.msg);
+        });
+      }, false);
+  }, false);
+})();
+</script>
+
+

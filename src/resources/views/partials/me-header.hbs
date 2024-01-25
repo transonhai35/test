@@ -1,0 +1,43 @@
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">My Web</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="https://i.pinimg.com/564x/8f/33/30/8f3330d6163782b88b506d396f5d156f.jpg" alt="" class="user-avatar">
+              <span id="full-name"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" id="list-prods">Danh sách sản phẩm của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="v1/product/create">Thêm sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="logout" href="/">Đăng xuất</a>
+          </div>
+        </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+<script> 
+  var account =  JSON.parse(localStorage.getItem('account'));
+  let author = account.id;
+  let fullName = document.getElementById('full-name');
+  window.onload = function() {
+    fullName.innerText = account.fullName;
+  }
+  let listProds = document.getElementById('list-prods');
+  listProds.href = 'v1/product/list' + '/' + author;
+
+     let logout = document.getElementById('logout');
+  logout.onclick = () => {
+    localStorage.removeItem('account');
+  }
+
+</script>

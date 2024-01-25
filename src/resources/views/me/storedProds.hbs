@@ -1,0 +1,123 @@
+<head>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">My Web</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="https://i.pinimg.com/564x/8f/33/30/8f3330d6163782b88b506d396f5d156f.jpg" alt="" class="user-avatar">
+              <span id="full-name"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#" id="list-prods">Danh sách sản phẩm của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/me/v1/product/create">Thêm sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="logout" href="/">Đăng xuất</a>
+          </div>
+        </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+</head>
+
+<div class="mt-4 container">
+    <h3>Danh sách sản phẩm</h3>
+
+        <div class="row">
+
+        {{#each product}}
+        <div class="col-sm-6">
+            <div class="card invitation-card-item">
+                <a href="#">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="#">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-text">{{this.price}}</p>
+                    <div class="container">
+                        <a href="/me/v1/product/update/{{this._id}}" class="btn btn-primary">Sửa</a>
+                        <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-course-modal">Xóa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+
+        <button class="btn-create" style="margin: 15px;">
+              <a class="dropdown-item" href="/me/v1/product/create">Thêm sản phẩm</a>
+        </button>
+
+
+    </div>
+
+</div>
+
+{{!-- Confirm delete course --}}
+<div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa thiệp mời này chứ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa chứ?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-card" type="button" class="btn btn-danger">Xóa bỏ</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete hidden form --}}
+<form name="delete-card-form" method="POST"></form>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var cardId;
+        var btnDeleteCard = document.getElementById('btn-delete-card');
+        var deleteForm = document.forms['delete-card-form'];
+
+        //When dialog confirm click
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            cardId = button.data('id');
+        })
+
+        btnDeleteCard.onclick = function () {
+            deleteForm.action = '/me/v1/product/delete/' + cardId + '?_method=DELETE';
+            deleteForm.submit();
+        }
+    });
+
+
+</script>
+
+
+<script> 
+  var account =  JSON.parse(localStorage.getItem('account'));
+  let author = account.id;
+  let fullName = document.getElementById('full-name');
+  window.onload = function() {
+    fullName.innerText = account.fullName;
+  }
+    document.getElementById('logout').onclick = () => {
+    localStorage.removeItem('account');
+  }
+</script>
